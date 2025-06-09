@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-function JobForm({ onJobAdded }) {
+import JobForm from './JobForm';
+function JobForm({ onJobAdded, editingJob, clearEditing }) {
     const[company_name, setCompany] = useState('');
     const [position, setPosition] = useState('');
 
@@ -11,16 +11,18 @@ function JobForm({ onJobAdded }) {
             company_name,
             position,
             status: 'APPLIED'
-            }).then(res=>{
+            })
+            .then(res=>{
                 setCompany('');
                 setPosition('');
                 onJobAdded();
-            }).catch(err=> console.error(err));
+            })
+            .catch(err=> console.error(err));
     };
     return (
         <form onSubmit={handleSubmit}>
-            <input value={company_name} onChange={e=> setCompany(e.target.value)} placeholder="Company Name"/>
-            <input value={position} onChange={e => setPosition(e.target.value)} placeholder="Position"/>
+            <input value={company_name} onChange={e=> setCompany(e.target.value)} placeholder="Company Name"required style={{ marginRight:'10px'}}/>
+            <input value={position} onChange={e => setPosition(e.target.value)} placeholder="Position" required style={{ marginRight:'10px'}}/>
             <button type="submit">Add Job</button>
         </form>
     );
